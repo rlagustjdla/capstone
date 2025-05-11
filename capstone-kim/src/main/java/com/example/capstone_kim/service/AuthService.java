@@ -20,7 +20,7 @@ public class AuthService {
 
     public void signup(SignupRequest request) {
         // 1. 학교 이메일인지 검증 (예: @school.ac.kr로 끝나는지)
-        if (!request.getEmail().endsWith("@school.ac.kr")) {
+        if (!request.getEmail().endsWith("@pukyong.ac.kr")) {
             throw new IllegalArgumentException("학교 이메일 주소만 가입할 수 있습니다.");
         }
 
