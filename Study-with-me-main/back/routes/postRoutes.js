@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const postController = require('../controllers/postController');
 
+// 게시글 검색
+router.get('/search', postController.searchPosts);
+
 // 게시글 작성
 router.post('/', postController.createPost);
 
