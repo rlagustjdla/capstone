@@ -17,7 +17,7 @@ export default function ChatScreen() {
         return;
       }
       setUserId(storedId);
-      const res = await axios.get(`http://192.168.45.173:3000/chatroom/user/${storedId}`);
+      const res = await axios.get(`http://112.162.196.250:3000/chatroom/user/${storedId}`);
       setChatRooms(res.data);
     } catch (err) {
       console.error('채팅방 목록 불러오기 실패:', err);

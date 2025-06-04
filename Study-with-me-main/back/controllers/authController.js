@@ -20,20 +20,33 @@ exports.checkEmail = async (req, res) => {
 exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    // 1. 요청이 제대로 왔는지 확인
+    console.log('로그인 시도:', email, password);
+
     const user = await User.findOne({ email });
-    if (!user || user.password !== password) {
+
+    // 2. 사용자 존재 여부 및 비밀번호 확인
+    if (!user || String(user.password) !== String(password)) {
       return res.status(401).json({ message: '아이디 또는 비밀번호가 일치하지 않습니다.' });
     }
+
+    // 3. 세션 설정
     req.session.user = {
       _id: user._id,
       email: user.email,
       username: user.username
     };
+
+    // 4. 응답
     res.json({ message: '로그인 성공', username: user.username, userId: user._id });
+
   } catch (err) {
+    console.error('로그인 중 서버 오류:', err);  // <== 여기에 추가
     res.status(500).json({ message: '서버 오류', error: err.message });
   }
 };
+
 
 
 // ✅ 비밀번호 재설정 코드 요청
@@ -47,7 +60,11 @@ exports.requestResetCode = async (req, res) => {
     user.resetCode = code;
     await user.save();
 
-    await sendEmail(email, '[StudyWithMe] 비밀번호 재설정 코드', '비밀번호 재설정 코드: ${code}\n5분 내로 입력해 주세요.');
+    await sendEmail(
+      email,
+      '[StudyWithMe] 이메일 인증 코드',
+      `인증 코드: ${code}\n5분 내로 입력해 주세요.`
+    );
 
     res.json({ message: '비밀번호 재설정 이메일이 발송되었습니다.' });
   } catch (err) {
@@ -103,7 +120,11 @@ exports.requestEmailVerification = async (req, res) => {
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     emailVerificationCodes[email] = code;
 
-    await sendEmail(email, '[StudyWithMe] 이메일 인증 코드',' 인증 코드: ${code}\n5분 내로 입력해 주세요.');
+    await sendEmail(
+      email,
+      '[StudyWithMe] 이메일 인증 코드',
+      `인증 코드: ${code}\n5분 내로 입력해 주세요.`
+    );
 
     res.json({ message: '학교 이메일로 인증 코드가 발송되었습니다.' });
   } catch (err) {

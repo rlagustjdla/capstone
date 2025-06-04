@@ -10,21 +10,11 @@ const ChatRoom = require('./models/ChatRoom');
 const User = require('./models/User');
 
 // 추가된 부분(서버에 라우터 연결)
-const materialRoutes = require('./routes/materialRoutes');
-app.use('/api/materials', materialRoutes);
+const materialRoutes = require('./routes/material');
 const postRoutes = require('./routes/postRoutes');
-app.use('/api/posts', postRoutes);
 // 추가된 부분(세션 미들웨어 추가)
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
-app.use(session({
-  secret: 'your-secret-key',
-  resave: false,
-  saveUninitialized: false,
-  store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
-  cookie: { maxAge: 1000 * 60 * 60 * 24 } // 1일 유지
-}));
-
 
 dotenv.config();
 const app = express();
@@ -32,7 +22,17 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(cors({
+  origin: 'http://localhost:19006', // 또는 React Native Dev 서버 주소
+  credentials: true
+}));
+app.use(session({
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: false,
+  store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
+  cookie: { maxAge: 1000 * 60 * 60 * 24 } // 1일 유지
+}));
 app.get('/', (req, res) => {
   res.send('Backend server is running!');
 });
@@ -45,6 +45,10 @@ app.use('/schedule', require('./routes/schedule'));
 app.use('/notification', require('./routes/notification'));
 app.use('/chat', require('./routes/chat'));
 app.use('/chatroom', require('./routes/chatroom'));
+// 추가된 부분(라우터 연결)
+app.use('/material', materialRoutes);
+app.use('/postRoutes', postRoutes);
+
 
 const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://192.168.45.173:27017/studywithme';

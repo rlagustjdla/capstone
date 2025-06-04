@@ -5,7 +5,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
-const socket = io('http://192.168.45.173:3000');
+const socket = io('http://112.162.196.250:3000');
 
 export default function ChatRoomScreen({ route }) {
   const { roomId } = route.params;
@@ -16,9 +16,9 @@ export default function ChatRoomScreen({ route }) {
 
   const fetchMessages = async (storedId) => {
     try {
-      const res = await axios.get(`http://192.168.45.173:3000/chat/${roomId}/messages`);
+      const res = await axios.get(`http://112.162.196.250:3000/chat/${roomId}/messages`);
       setMessages(res.data);
-      await axios.patch(`http://192.168.45.173:3000/chat/${roomId}/read`, { userId: storedId });
+      await axios.patch(`http://112.162.196.250:3000/chat/${roomId}/read`, { userId: storedId });
     } catch (err) {
       console.error('메시지 불러오기 실패:', err);
     }
@@ -31,7 +31,7 @@ export default function ChatRoomScreen({ route }) {
       setSenderId(storedId);
       socket.emit('joinRoom', roomId);
 
-      const roomRes = await axios.get(`http://192.168.45.173:3000/chatroom/${roomId}`);
+      const roomRes = await axios.get(`http://112.162.196.250:3000/chatroom/${roomId}`);
       navigation.setOptions({ title: roomRes.data.studyId.title });
 
       await fetchMessages(storedId);

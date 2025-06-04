@@ -30,7 +30,7 @@ export default function SetProfile() {
     const fetchProfile = async () => {
       try {
         const userId = await AsyncStorage.getItem('userId');
-        const response = await axios.get(`http://192.168.45.173:3000/profile/${userId}`);
+        const response = await axios.get(`http://112.162.196.250:3000/profile/${userId}`);
         const data = response.data;
         setUsername(data.username);
         setMajor(data.major ?? '');
@@ -55,7 +55,7 @@ export default function SetProfile() {
       return;
     }
     try {
-      await axios.post('http://192.168.45.173:3000/auth/check-username', { username });
+      await axios.post('http://112.162.196.250:3000/auth/check-username', { username });
       Alert.alert('사용 가능', '사용 가능한 닉네임입니다.');
       setUsernameChecked(true);
     } catch (error) {
@@ -84,7 +84,7 @@ export default function SetProfile() {
   const handleSave = async () => {
     try {
       const userId = await AsyncStorage.getItem('userId');
-      await axios.put(`http://192.168.45.173:3000/profile/${userId}`, {
+      await axios.put(`http://112.162.196.250:3000/profile/${userId}`, {
         username,
         major,
         grade: Number(grade),

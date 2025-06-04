@@ -31,16 +31,32 @@ export default function LoginScreen() {
       Alert.alert('알림', '이메일과 비밀번호를 모두 입력하세요.');
       return;
     }
+
     try {
-      const response = await axios.post('http://192.168.45.173:3000/auth/login', { email, password });
-      await AsyncStorage.setItem('userId', response.data.userId);
-      await AsyncStorage.setItem('userName', response.data.username);
-      Alert.alert('로그인 성공', `${response.data.username}님 환영합니다.`);
+      const response = await axios.post(
+        'http://112.162.196.250:3000/auth/login',
+        { email, password },
+        { withCredentials: true } // 세션을 사용할 경우 필수
+      );
+
+      const { userId, username, message } = response.data;
+
+      if (!userId || !username) {
+        Alert.alert('오류', '로그인 응답 데이터가 올바르지 않습니다.');
+        return;
+      }
+
+      await AsyncStorage.setItem('userId', userId);
+      await AsyncStorage.setItem('userName', username);
+
+      Alert.alert('로그인 성공', `${username}님 환영합니다.`);
       navigation.replace('Tabs');
     } catch (err) {
+      console.error('로그인 오류:', err);
       Alert.alert('로그인 실패', '이메일 또는 비밀번호가 올바르지 않습니다.');
     }
   };
+
 
   return (
     <View style={styles.container}>
