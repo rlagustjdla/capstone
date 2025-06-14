@@ -6,7 +6,7 @@ import { BACKEND_URL } from '@env';   // ➡️ .env의 IP 주소 불러오기
 
 // ✅ axios 인스턴스 생성
 const api = axios.create({
-  baseURL: BACKEND_URL,  // ➡️ http://192.168.xxx.xxx:3000
+  baseURL: 'http://112.162.196.250:3000',  // ➡️ http://192.168.xxx.xxx:3000
   timeout: 5000,         // ➡️ 요청 타임아웃 (ms)
 });
 

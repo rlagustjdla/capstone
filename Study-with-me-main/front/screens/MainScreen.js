@@ -48,6 +48,7 @@ export default function MainScreen() {
 
         if (userId) {
           const response = await api.get(`/main/${userId}`);
+          console.log('스터디 목록 응답:', response.data);
           setStudyGroups(response.data.studies);
 
           const scheduleRes = await api.get(`/schedule/user/${userId}`);
@@ -127,7 +128,7 @@ export default function MainScreen() {
         ) : (
           studyGroups.map((study) => (
             <TouchableOpacity key={study._id} style={styles.studyItem}
-              onPress={() => navigation.navigate('스터디상세', { study })}
+              onPress={() => navigation.navigate('Studyroommain', { study })}
             >
               <Text style={styles.studyTitle}>{study.title}</Text>
               <Text style={styles.studyDesc}>{study.description}</Text>

@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "axios": "^1.9.0",
+    "expo-document-picker": "^13.1.5"
+  }
+}

@@ -14,9 +14,13 @@ import ProfileScreen from './screens/ProfileScreen';
 import SetProfile from './screens/SetProfile';
 import SettingScreen from './screens/SettingScreen';
 import NotificationScreen from './screens/NotificationScreen';
-import StudyDetailScreen from './screens/StudyDetailScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
+import Studyroommain from './screens/Studyroommain'; // ← Studyroommain import 추가
+import Board from './screens/Board';
+import BoardWrite from './screens/BoardWrite';
+import FileShare from './screens/fileshare';
+import ScheduleAdd from './screens/ScheduleAdd';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -116,8 +120,28 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="스터디상세"
-          component={StudyDetailScreen}
+          name="Board"
+          component={Board}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="BoardWrite"
+          component={BoardWrite}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="FileShare"
+          component={FileShare}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ScheduleAdd"
+          component={ScheduleAdd}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Studyroommain"
+          component={Studyroommain}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -8,24 +8,25 @@ const { Server } = require('socket.io');
 const Message = require('./models/Message');
 const ChatRoom = require('./models/ChatRoom');
 const User = require('./models/User');
-
+const studyRoutes = require('./routes/study');
 // 추가된 부분(서버에 라우터 연결)
 const materialRoutes = require('./routes/material');
 const postRoutes = require('./routes/postRoutes');
+const folderRoutes = require('./routes/folder');
 // 추가된 부분(세션 미들웨어 추가)
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 
 dotenv.config();
 const app = express();
-
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-  origin: 'http://localhost:19006', // 또는 React Native Dev 서버 주소
+  origin: '*', // 또는 위의 여러 origin 배열
   credentials: true
 }));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use(session({
   secret: 'your-secret-key',
   resave: false,
@@ -48,7 +49,9 @@ app.use('/chatroom', require('./routes/chatroom'));
 // 추가된 부분(라우터 연결)
 app.use('/material', materialRoutes);
 app.use('/postRoutes', postRoutes);
-
+app.use('/study', studyRoutes);
+app.use('/folder', folderRoutes);
+app.use('/uploads', express.static('uploads'));
 
 const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://192.168.45.173:27017/studywithme';

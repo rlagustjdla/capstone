@@ -1,20 +1,18 @@
-// routes/main.js
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User');
+const mongoose = require('mongoose');
 const Study = require('../models/Study');
 
-// ✅ GET /main/:userId → 해당 유저의 가입 스터디 조회
 router.get('/:userId', async (req, res) => {
   try {
     const userId = req.params.userId;
-    // ✅ 해당 userId로 가입한 study 목록 찾기
-    const studies = await Study.find({ members: userId }).populate('host', 'username');
-
+    console.log('요청 userId:', userId);
+    const studies = await Study.find({ members: new mongoose.Types.ObjectId(userId) });
+    console.log('조회된 스터디:', studies);
     res.json({ studies });
-  } catch (error) {
-    console.error('❌ 스터디 조회 실패:', error.message);
-    res.status(500).json({ message: '스터디 조회 실패' });
+  } catch (err) {
+    console.error('스터디 목록 조회 오류:', err);
+    res.status(500).json({ message: '서버 오류', error: err.message });
   }
 });
 
